@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Responsive Dynamic Tailwind Blog</title>
+  <title>simple blog</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -30,10 +30,10 @@
 
     <div class="mb-16 text-center md:text-left">
       <h1 class="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl text-slate-900 dark:text-white transition-colors duration-300">
-        Explore the <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-emerald-400 dark:to-cyan-400 transition-colors duration-300">Future</span>
+        Explore the <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-emerald-400 dark:to-cyan-400 transition-colors duration-300">Blog</span>
       </h1>
       <p class="mt-4 text-lg text-slate-500 dark:text-slate-400 transition-colors duration-300 max-w-2xl">
-        A collection of thoughts on web development, design patterns, and modern frontend architecture.
+        Notes on coding, creativity, and building better websites
       </p>
     </div>
 
@@ -57,7 +57,9 @@
           <div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-700/50 transition-colors duration-200">
             <div class="flex items-center space-x-3">
               <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Author">
-              <span class="text-sm font-medium text-slate-900 dark:text-slate-200 transition-colors duration-200">{{ $post->user->name }}</span>
+              <a href="{{ route('preview', $post->user) }}">
+                <span class="text-sm font-medium text-slate-900 dark:text-slate-200 transition-colors duration-200">{{ $post->user->name }}</span>
+              </a>
             </div>
             <p class="text-xs font-medium text-slate-500 dark:text-slate-500">{{ $post->published_at }}</p>
           </div>

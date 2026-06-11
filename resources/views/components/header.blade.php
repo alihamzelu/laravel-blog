@@ -6,7 +6,7 @@
       <!-- Left Section: Logo & Main Navigation -->
       <div class="flex items-center space-x-8">
         <a href="" class="text-2xl font-black tracking-tight text-indigo-600 dark:text-emerald-400">
-          DevBlog.
+          SimpleBlog.
         </a>
 
         <!-- Desktop Menu -->
@@ -69,27 +69,44 @@
             <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800">
               <p class="text-xs text-slate-400">Welcome</p>
               <p class="text-sm font-bold text-slate-700 dark:text-slate-200 truncate">
+                @auth
                 {{ Auth::user()->name }}
+                @else
+                guest
+                @endauth
               </p>
             </div>
 
+            @auth
             <a href="{{ route('dashboard') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50">
               Dashboard
             </a>
-
+            <hr class="border-slate-100 dark:border-slate-800 my-1">
             <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50">
               Edit Profile
             </a>
+            @else
+              <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50">
+              Login
+              </a>
+              <hr class="border-slate-100 dark:border-slate-800 my-1">
+              <a href="{{ route('register') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50">
+              register
+              </a>
+            @endauth
+            
 
-            <hr class="border-slate-100 dark:border-slate-800 my-1">
-
-            <form method="POST" action="{{ route('logout') }}">
+            @auth
+              <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit"
-                    class="block w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10">
-                    Sign Out
+                  class="block w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10">
+                  Sign Out
                 </button>
-            </form>
+              </form>
+            @else
+
+            @endauth
 
           </div>
         </div>

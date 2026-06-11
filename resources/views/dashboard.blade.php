@@ -39,11 +39,11 @@
       </div>
       <div class="flex items-center space-x-3">
         <!-- Quick Nav to Preview Mode Page -->
-        <a href="#" class="inline-flex items-center space-x-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-200 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
+        <a href="{{ route('preview') }}" class="inline-flex items-center space-x-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-200 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
           <span>View Profile Preview</span>
         </a>
         <!-- Quick Nav to Edit Info Page -->
-        <a href="#" class="inline-flex items-center space-x-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-emerald-400 dark:text-night dark:hover:bg-emerald-500 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
+        <a href="{{ route('profile.edit') }}" class="inline-flex items-center space-x-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-emerald-400 dark:text-night dark:hover:bg-emerald-500 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
           <span>Edit Profile Settings</span>
         </a>
       </div>

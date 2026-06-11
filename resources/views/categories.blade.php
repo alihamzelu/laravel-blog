@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Categories - DevBlog</title>
+  <title>Categories</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -32,7 +32,7 @@
     <!-- Hero / Intro Header -->
     <header class="max-w-2xl mb-12">
       <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-slate-900 dark:text-white mb-4 transition-colors">
-        Explore by Topic
+        Explore by Categories
       </h1>
       <p class="text-lg text-slate-500 dark:text-slate-400 transition-colors">
         Find deep dives, engineering guides, and design perspectives categorized to help you build better frontend experiences.
