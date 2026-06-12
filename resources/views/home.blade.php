@@ -39,12 +39,14 @@
 
     <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
       @foreach ($posts as $post)
-      
+
       <article class="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-200 ease-in-out hover:-translate-y-1.5 hover:shadow-xl dark:bg-slate-800/50 dark:ring-slate-700 dark:hover:ring-emerald-500/50 dark:hover:shadow-emerald-500/10">
         <div class="relative overflow-hidden">
           <img class="h-56 w-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-105" src="{{ asset('storage/' . $post->image) }}" alt="Code on screen">
           <div class="absolute top-4 left-4 rounded-full bg-indigo-100 px-3 py-1 text-xs font-bold text-indigo-700 dark:bg-emerald-500/20 dark:text-emerald-400 dark:border dark:border-emerald-500/30 transition-colors duration-200">
-            {{ $post->category->name }}
+            <a href="{{ route('articles.index', ['category' => $post->category->slug]) }}">
+              {{ $post->category->name }}
+            </a>
           </div>
         </div>
         <div class="flex flex-1 flex-col justify-between p-6">
@@ -68,13 +70,13 @@
 
       @endforeach
 
-      
+
 
 
     </div>
   </main>
 
-    @include('components.footer')
+  @include('components.footer')
 
 
   <script>

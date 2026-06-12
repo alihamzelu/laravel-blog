@@ -2,24 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Category;
 use App\Models\Post;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+
 class PostController extends Controller
 {
+    
+    public function edit(Post $post)
+    {
+        $categories = Category::all();
+
+        
+        return view('posts.edit', compact('post', 'categories'));
+    }
+    public function destroy(Post $post)
+    {
+        if ($post->user_id !== auth()->id()) {
+            abort(403);
+        }
+        $post->delete();
+
+        return redirect()->route('dashboard')->with('status', 'Post deleted successfully!');
+    }
+
+    public function dashboard()
+    {
+
+        $user = Auth::user();
+
+        $posts = $user->posts()
+            ->with('category')
+            ->latest()
+            ->get();
+
+        return view("dashboard", compact("posts"));
+    }
+
     public function header()
     {
         $categories = Category::all();
         $users = Auth::user();
 
         $name = $users->name;
-        
-        return view("components.header", compact("categories","name"));
+
+        return view("components.header", compact("categories", "name"));
     }
-    
+
     public function categories()
     {
         $categories = Category::all();
@@ -27,22 +59,22 @@ class PostController extends Controller
     }
     public function show(Post $post)
     {
-        $post->load(['category','user']);
+        $post->load(['category', 'user']);
         $categories = Category::all();
         $posts = Post::with(['category', 'user'])->latest()->get();
-        return view('posts.show', compact('post',"categories",'posts'));
+        return view('posts.show', compact('post', "categories", 'posts'));
     }
 
     public function home()
     {
         $categories = Category::all();
         $posts = Post::with(['category', 'user'])->latest()->get();
-        return view("home", compact("categories",'posts'));
+        return view("home", compact("categories", 'posts'));
     }
     public function articles(Request $request)
     {
         $categories = Category::all();
-        
+
         $searchTerm = $request->input('search');
         $categorySlug = $request->input('category');
 
@@ -51,7 +83,7 @@ class PostController extends Controller
             ->when($searchTerm, function ($query, $searchTerm) {
                 return $query->where(function ($q) use ($searchTerm) {
                     $q->where('title', 'like', "%{$searchTerm}%")
-                    ->orWhere('content', 'like', "%{$searchTerm}%");
+                        ->orWhere('content', 'like', "%{$searchTerm}%");
                 });
             })
             ->when($categorySlug, function ($query, $categorySlug) {
@@ -64,22 +96,22 @@ class PostController extends Controller
 
 
 
-        return view("articles", compact("categories",'posts'));
+        return view("articles", compact("categories", 'posts'));
     }
     public function create()
     {
         $categories = Category::all();
 
-        return view("posts.create", compact("categories"));
+        return view("create", compact("categories"));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            "title"=> "required|max:255",
-            "content"=> "required",
-            "category_id"=> "required|exists:categories,id",
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            "title" => "required|max:255",
+            "content" => "required",
+            "category_id" => "required|exists:categories,id",
+            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
         ]);
 
         $imagePath = null;
@@ -90,13 +122,28 @@ class PostController extends Controller
 
         $request->user()->posts()->create([
             'title' => $validated['title'],
-            'slug' => Str::slug($validated['title']), 
+            'slug' => Str::slug($validated['title']),
             'content' => $validated['content'],
             'category_id' => $validated['category_id'],
             'image' => $imagePath,
             'published_at' => now(),
         ]);
 
-        return redirect('/dashboard')->with('status', 'Post created successfully!');
+        return redirect()->route('dashboard')->with('status', 'Post created successfully!');
+    }
+    public function update(Request $request, Post $post)
+    {
+        $request->validate([
+            "title" => "required|max:255",
+            "content" => "required",
+            "category_id" => "required|exists:categories,id",
+            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+        ]);
+        $post->update([
+            'title' => $request->title,
+            'content' => $request->content,
+        ]);
+
+        return redirect()->route('dashboard')->with('status', 'Post updated successfully!');
     }
 }

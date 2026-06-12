@@ -31,6 +31,12 @@
         </div>
 
         <div>
+          <label for="username" class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">Username</label>
+          <input type="text" id="username" name="username" value="{{ old('username') }}" required class="w-full bg-slate-50 dark:bg-slate-800/60 border @error('username') border-red-500 @else border-slate-200 dark:border-slate-700 @enderror rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all" placeholder="johndoe" />
+          @error('username') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+        </div>
+
+        <div>
           <label for="email" class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">Email Address</label>
           <input type="email" id="email" name="email" value="{{ old('email') }}" required class="w-full bg-slate-50 dark:bg-slate-800/60 border @error('email') border-red-500 @else border-slate-200 dark:border-slate-700 @enderror rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all" placeholder="you@example.com" />
           @error('email') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror

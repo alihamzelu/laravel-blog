@@ -89,39 +89,17 @@
           <div class="flex items-center space-x-3 mb-3">
             <img class="h-10 w-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Alex Reed">
             <div>
-              <p class="text-sm font-bold text-slate-900 dark:text-slate-200">Alex Reed</p>
-              <p class="text-2xs text-slate-400 dark:text-slate-500">SF, California</p>
+              <p class="text-sm font-bold text-slate-900 dark:text-slate-200">{{ $post->user->name }}</p>
+              <p class="text-2xs text-slate-400 dark:text-slate-500">{{ $post->user->job }}</p>
             </div>
           </div>
           <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-            Frontend Systems Lead. Building modular CSS tools and checking out micro-interactions.
+            {{ $post->user->bio }}
           </p>
-          <a href="#" class="inline-block mt-3 text-xs font-bold text-indigo-600 dark:text-emerald-400 hover:underline">View Profile &rarr;</a>
+          <a href="{{ route('preview', auth()->user()) }}" class="inline-block mt-3 text-xs font-bold text-indigo-600 dark:text-emerald-400 hover:underline">View Profile &rarr;</a>
         </div>
 
-        <!-- Inline Related Content Feed -->
-        <div class="rounded-2xl bg-white border border-slate-200 dark:bg-slate-800/40 dark:border-slate-800 p-5 transition-colors">
-          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-4">Related Material</h3>
-          <div class="space-y-4">
-            
-            <!-- Link item 1 -->
-            <a href="#" class="group block border-b border-slate-100 dark:border-slate-800/60 pb-3 last:border-0 last:pb-0">
-              <span class="text-2xs font-bold uppercase tracking-wide text-rose-500 dark:text-fuchsia-400">Design</span>
-              <h4 class="text-sm font-bold text-slate-800 group-hover:text-rose-600 dark:text-slate-200 dark:group-hover:text-fuchsia-400 transition-colors line-clamp-2 mt-0.5">
-                The Power of Dark Mode Layout Design
-              </h4>
-            </a>
 
-            <!-- Link item 2 -->
-            <a href="#" class="group block border-b border-slate-100 dark:border-slate-800/60 pb-3 last:border-0 last:pb-0">
-              <span class="text-2xs font-bold uppercase tracking-wide text-indigo-500 dark:text-emerald-400">Engineering</span>
-              <h4 class="text-sm font-bold text-slate-800 group-hover:text-indigo-600 dark:text-slate-200 dark:group-hover:text-emerald-400 transition-colors line-clamp-2 mt-0.5">
-                CSS Grid Layout Compositions for Dashboards
-              </h4>
-            </a>
-
-          </div>
-        </div>
 
       </aside>
 

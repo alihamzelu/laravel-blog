@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" class="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Creator Dashboard - DevBlog</title>
-  
+
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  
+
   <!-- Tailwind Configuration for Dark Mode -->
   <script>
     tailwind.config = {
@@ -15,13 +16,14 @@
       theme: {
         extend: {
           colors: {
-            night: '#0B1120', 
+            night: '#0B1120',
           }
         },
       },
     }
   </script>
 </head>
+
 <body class="bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-night dark:text-slate-100 font-sans antialiased overflow-x-hidden">
 
   <!-- Navigation -->
@@ -30,7 +32,7 @@
 
   <!-- Dashboard Container -->
   <main class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-    
+
     <!-- Welcome Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-200 dark:border-slate-800 pb-6 mb-8 gap-4 transition-colors">
       <div>
@@ -39,7 +41,7 @@
       </div>
       <div class="flex items-center space-x-3">
         <!-- Quick Nav to Preview Mode Page -->
-        <a href="{{ route('preview') }}" class="inline-flex items-center space-x-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-200 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
+        <a href="{{ route('preview', auth()->user()) }}" class="inline-flex items-center space-x-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-200 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
           <span>View Profile Preview</span>
         </a>
         <!-- Quick Nav to Edit Info Page -->
@@ -49,30 +51,6 @@
       </div>
     </div>
 
-    <!-- Analytics Stats Overview Grid -->
-    <section class="grid gap-5 grid-cols-2 lg:grid-cols-4 mb-10">
-      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/40 transition-colors">
-        <p class="text-2xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Total Views</p>
-        <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">14.2k</h3>
-        <span class="text-2xs text-emerald-500 font-bold mt-1 inline-block">&uarr; 12% this month</span>
-      </div>
-      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/40 transition-colors">
-        <p class="text-2xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Published Posts</p>
-        <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">3</h3>
-        <span class="text-2xs text-slate-400 dark:text-slate-500 font-medium mt-1 inline-block">No draft items pending</span>
-      </div>
-      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/40 transition-colors">
-        <p class="text-2xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Avg. Read Time</p>
-        <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">6.3m</h3>
-        <span class="text-2xs text-indigo-500 dark:text-emerald-400 font-medium mt-1 inline-block">Highly engaging depth</span>
-      </div>
-      <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900/40 transition-colors">
-        <p class="text-2xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">Profile Followers</p>
-        <h3 class="text-2xl font-black text-slate-900 dark:text-white mt-1">842</h3>
-        <span class="text-2xs text-emerald-500 font-bold mt-1 inline-block">&uarr; 34 new this week</span>
-      </div>
-    </section>
-
     <!-- Content Management Block -->
     <section>
       <div class="flex items-center justify-between mb-4">
@@ -80,7 +58,9 @@
           Your Articles
         </h2>
         <button class="text-xs font-bold text-indigo-600 dark:text-emerald-400 hover:underline">
-          Create New Article &rarr;
+          <a href="{{ route('create') }}">
+            Create New Article &rarr;
+          </a>
         </button>
       </div>
 
@@ -97,60 +77,34 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 dark:divide-slate-800/60 font-medium text-slate-700 dark:text-slate-300">
-              
-              <!-- Row 1 -->
+              @foreach ($posts as $post)
               <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/40 transition-colors">
                 <td class="px-6 py-4">
-                  <span class="font-bold text-slate-900 dark:text-white block truncate max-w-xs sm:max-w-md">Mastering Tailwind CSS Layouts at Scale</span>
-                  <span class="text-2xs text-slate-400 font-medium sm:hidden block mt-0.5">Engineering &bull; Oct 12, 2023</span>
+                  <span class="font-bold text-slate-900 dark:text-white block truncate max-w-xs sm:max-w-md">{{ $post->title }}</span>
+                  <span class="text-2xs text-slate-400 font-medium sm:hidden block mt-0.5"> &bull; Oct 12, 2023</span>
                 </td>
                 <td class="px-6 py-4 hidden sm:table-cell">
-                  <span class="inline-block rounded-full bg-indigo-50 text-indigo-700 dark:bg-emerald-500/10 dark:text-emerald-400 px-2 py-0.5 text-2xs font-bold uppercase">Engineering</span>
+                  <span class="inline-block rounded-full bg-indigo-50 text-indigo-700 dark:bg-emerald-500/10 dark:text-emerald-400 px-2 py-0.5 text-2xs font-bold uppercase">{{ $post->category->name }}</span>
                 </td>
-                <td class="px-6 py-4 text-xs font-normal text-slate-400 hidden md:table-cell">Oct 12, 2023</td>
+                <td class="px-6 py-4 text-xs font-normal text-slate-400 hidden md:table-cell">{{ $post->published_at->format('M j, Y') }}</td>
                 <td class="px-6 py-4 text-right text-xs">
                   <div class="flex items-center justify-end space-x-3">
-                    <button class="text-indigo-600 dark:text-emerald-400 font-bold hover:underline">Edit</button>
-                    <button class="text-rose-600 font-bold hover:underline">Delete</button>
-                  </div>
-                </td>
-              </tr>
+                    <a href="{{ route('posts.edit', $post) }}"
+                      class="text-indigo-600 dark:text-emerald-400 font-bold hover:underline">
+                      Edit
+                    </a>
+                    <form action="{{ route('posts.destroy', $post) }}" method="POST">
+                      @csrf
+                      @method('DELETE')
 
-              <!-- Row 2 -->
-              <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/40 transition-colors">
-                <td class="px-6 py-4">
-                  <span class="font-bold text-slate-900 dark:text-white block truncate max-w-xs sm:max-w-md">The Power of Dark Mode Layout Design</span>
-                  <span class="text-2xs text-slate-400 font-medium sm:hidden block mt-0.5">Design &bull; Sep 28, 2023</span>
-                </td>
-                <td class="px-6 py-4 hidden sm:table-cell">
-                  <span class="inline-block rounded-full bg-rose-50 text-rose-700 dark:bg-fuchsia-500/10 dark:text-fuchsia-400 px-2 py-0.5 text-2xs font-bold uppercase">Design</span>
-                </td>
-                <td class="px-6 py-4 text-xs font-normal text-slate-400 hidden md:table-cell">Sep 28, 2023</td>
-                <td class="px-6 py-4 text-right text-xs">
-                  <div class="flex items-center justify-end space-x-3">
-                    <button class="text-indigo-600 dark:text-emerald-400 font-bold hover:underline">Edit</button>
-                    <button class="text-rose-600 font-bold hover:underline">Delete</button>
+                      <button type="submit">
+                        Delete
+                      </button>
+                    </form>
                   </div>
                 </td>
               </tr>
-
-              <!-- Row 3 -->
-              <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/40 transition-colors">
-                <td class="px-6 py-4">
-                  <span class="font-bold text-slate-900 dark:text-white block truncate max-w-xs sm:max-w-md">Building a Remote Productivity System</span>
-                  <span class="text-2xs text-slate-400 font-medium sm:hidden block mt-0.5">Life &bull; Aug 14, 2023</span>
-                </td>
-                <td class="px-6 py-4 hidden sm:table-cell">
-                  <span class="inline-block rounded-full bg-amber-50 text-amber-700 dark:bg-cyan-500/10 dark:text-cyan-400 px-2 py-0.5 text-2xs font-bold uppercase">Life</span>
-                </td>
-                <td class="px-6 py-4 text-xs font-normal text-slate-400 hidden md:table-cell">Aug 14, 2023</td>
-                <td class="px-6 py-4 text-right text-xs">
-                  <div class="flex items-center justify-end space-x-3">
-                    <button class="text-indigo-600 dark:text-emerald-400 font-bold hover:underline">Edit</button>
-                    <button class="text-rose-600 font-bold hover:underline">Delete</button>
-                  </div>
-                </td>
-              </tr>
+              @endforeach
 
             </tbody>
           </table>
@@ -166,24 +120,25 @@
     const lightIcon = document.getElementById('theme-toggle-light-icon');
 
     if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-        lightIcon.classList.remove('hidden');
+      document.documentElement.classList.add('dark');
+      lightIcon.classList.remove('hidden');
     } else {
-        document.documentElement.classList.remove('dark');
-        darkIcon.classList.remove('hidden');
+      document.documentElement.classList.remove('dark');
+      darkIcon.classList.remove('hidden');
     }
 
     themeToggleBtn.addEventListener('click', function() {
-        darkIcon.classList.toggle('hidden');
-        lightIcon.classList.toggle('hidden');
-        if (document.documentElement.classList.contains('dark')) {
-            document.documentElement.classList.remove('dark');
-            localStorage.setItem('color-theme', 'light');
-        } else {
-            document.documentElement.classList.add('dark');
-            localStorage.setItem('color-theme', 'dark');
-        }
+      darkIcon.classList.toggle('hidden');
+      lightIcon.classList.toggle('hidden');
+      if (document.documentElement.classList.contains('dark')) {
+        document.documentElement.classList.remove('dark');
+        localStorage.setItem('color-theme', 'light');
+      } else {
+        document.documentElement.classList.add('dark');
+        localStorage.setItem('color-theme', 'dark');
+      }
     });
   </script>
 </body>
+
 </html>

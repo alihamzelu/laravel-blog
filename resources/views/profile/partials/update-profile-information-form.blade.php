@@ -1,7 +1,7 @@
 <section>
   <header>
     <h2 class="text-lg font-bold text-slate-900 dark:text-white">Profile Information</h2>
-    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Update your account's profile information and email address.</p>
+    <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Update your account's profile information, email address, job title, and biography.</p>
   </header>
 
   <form id="send-verification" method="post" action="{{ route('verification.send') }}">@csrf</form>
@@ -30,6 +30,18 @@
           @endif
         </div>
       @endif
+    </div>
+
+    <div>
+      <label for="job" class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">Job Title</label>
+      <input type="text" id="job" name="job" value="{{ old('job', $user->job) }}" class="w-full bg-slate-50 dark:bg-slate-800/60 border @error('job') border-red-500 @else border-slate-200 dark:border-slate-700 @enderror rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all" placeholder="e.g. Full-Stack Developer" />
+      @error('job') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+    </div>
+
+    <div>
+      <label for="bio" class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">Biography</label>
+      <textarea id="bio" name="bio" rows="4" class="w-full bg-slate-50 dark:bg-slate-800/60 border @error('bio') border-red-500 @else border-slate-200 dark:border-slate-700 @enderror rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all resize-none" placeholder="Tell us about yourself, your skills, or what you write about...">{{ old('bio', $user->bio) }}</textarea>
+      @error('bio') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
     </div>
 
     <div class="flex items-center gap-4 pt-2">
