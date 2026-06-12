@@ -46,7 +46,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $users = Auth::user();
-
+        
         $name = $users->name;
 
         return view("components.header", compact("categories", "name"));

@@ -6,9 +6,36 @@
 
   <form id="send-verification" method="post" action="{{ route('verification.send') }}">@csrf</form>
 
-  <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+  {{-- 👈 اتریبیوت enctype برای ارسال فایل به فرم اضافه شد --}}
+  <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
     @csrf
     @method('patch')
+
+    <div>
+      <label class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">Profile Avatar</label>
+      <div class="flex items-center space-x-4">
+        
+        <div class="flex-shrink-0 h-16 w-16 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+          @if($user->avatar)
+            <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+          @else
+            <svg class="w-8 h-8 text-slate-400 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+            </svg>
+          @endif
+        </div>
+
+        <div class="flex-1">
+          <input type="file" 
+                 id="avatar" 
+                 name="avatar" 
+                 accept="image/*" 
+                 class="w-full text-xs text-slate-500 dark:text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-indigo-50 file:text-indigo-700 dark:file:bg-emerald-500/10 dark:file:text-emerald-400 hover:file:opacity-90 file:cursor-pointer cursor-pointer bg-slate-50 dark:bg-slate-800/60 border @error('avatar') border-red-500 @else border-slate-200 dark:border-slate-700 @enderror rounded-xl p-1.5 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all" />
+          @error('avatar') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+        </div>
+
+      </div>
+    </div>
 
     <div>
       <label for="name" class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">Name</label>

@@ -60,8 +60,10 @@
         <!-- Profile Avatar & Menu Dropdown -->
         <div class="relative">
           <button id="profile-menu-button" class="flex rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all">
-            <img class="h-8 w-8 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-700" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User avatar">
-          </button>
+            <img class="h-8 w-8 rounded-full object-cover"
+              src="{{ auth()->user()?->avatar
+            ? asset('storage/' . auth()->user()->avatar)
+            : asset('default-avatar.png') }}"> </button>
 
           <!-- Dropdown Card (Click trigger via JS) -->
           <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 origin-top-right rounded-xl border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-800 dark:bg-slate-900 focus:outline-none transition-all">
@@ -86,24 +88,24 @@
               Edit Profile
             </a>
             @else
-              <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50">
+            <a href="{{ route('login') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50">
               Login
-              </a>
-              <hr class="border-slate-100 dark:border-slate-800 my-1">
-              <a href="{{ route('register') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50">
+            </a>
+            <hr class="border-slate-100 dark:border-slate-800 my-1">
+            <a href="{{ route('register') }}" class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800/50">
               register
-              </a>
+            </a>
             @endauth
-            
+
 
             @auth
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit"
-                  class="block w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10">
-                  Sign Out
-                </button>
-              </form>
+            <form method="POST" action="{{ route('logout') }}">
+              @csrf
+              <button type="submit"
+                class="block w-full text-left px-4 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-500/10">
+                Sign Out
+              </button>
+            </form>
             @else
 
             @endauth
