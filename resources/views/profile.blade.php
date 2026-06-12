@@ -32,7 +32,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
 
         <div class="flex items-center space-x-5">
-          <img class="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover ring-4 ring-slate-100 dark:ring-slate-800" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Alex Reed avatar">
+          <img class="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover ring-4 ring-slate-100 dark:ring-slate-800" src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('default-avatar.png') }}" alt="Alex Reed avatar">
           <div>
             <h1 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">{{ $user->name }}</h1>
             <p class="text-xs sm:text-sm text-slate-400 dark:text-slate-500 font-medium">{{ $user->job }}</p>
