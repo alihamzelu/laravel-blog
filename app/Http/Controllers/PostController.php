@@ -112,7 +112,7 @@ class PostController extends Controller
             "title" => "required|max:255",
             "content" => "required",
             "category_id" => "required|exists:categories,id",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+            "image" => "nullable|image|max:2048",
         ]);
 
         $imagePath = null;
@@ -123,7 +123,7 @@ class PostController extends Controller
 
         $request->user()->posts()->create([
             'title' => $validated['title'],
-            'slug' => Str::slug($validated['title']),
+            'slug' => Str::slug($validated['title']).'-'.Str::random(6),
             'content' => $validated['content'],
             'category_id' => $validated['category_id'],
             'image' => $imagePath,
@@ -138,7 +138,7 @@ class PostController extends Controller
             "title" => "required|max:255",
             "content" => "required",
             "category_id" => "required|exists:categories,id",
-            "image" => "nullable|image|mimes:jpeg,png,jpg,gif|max:2048",
+            "image" => "nullable|image|max:2048",
         ]);
         $post->update([
             'title' => $request->title,

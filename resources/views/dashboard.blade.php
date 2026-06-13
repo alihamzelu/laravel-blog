@@ -80,7 +80,9 @@
               @foreach ($posts as $post)
               <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-900/40 transition-colors">
                 <td class="px-6 py-4">
-                  <span class="font-bold text-slate-900 dark:text-white block truncate max-w-xs sm:max-w-md">{{ $post->title }}</span>
+                  <a href="{{ route('posts.show', $post) }}" class=" font-bold hover:underline">
+                    {{ $post->title }}
+                  </a>
                   <span class="text-2xs text-slate-400 font-medium sm:hidden block mt-0.5"> &bull; Oct 12, 2023</span>
                 </td>
                 <td class="px-6 py-4 hidden sm:table-cell">
