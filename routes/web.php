@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentController;
 
 
 Route::get('/', [PostController::class, 'home'])->name('home');
@@ -14,6 +15,10 @@ Route::get('/profile/{user}', [UserController::class,'show'] )->name('preview');
 Route::delete('/posts/{post}', [PostController::class,'destroy'] )->name('posts.destroy');
 Route::get('/posts/{post}/edit', [PostController::class,'edit'] )->name('posts.edit');
 Route::put('/posts/{post}', [PostController::class,'update'] )->name('posts.update');
+
+
+
+Route::post('/posts/{post}/comments', [CommentController::class,'store'] )->name('comments.store');
 
 
 Route::get('/dashboard', [PostController::class, 'dashboard'])

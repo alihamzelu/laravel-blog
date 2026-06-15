@@ -63,7 +63,7 @@
             <img class="h-8 w-8 rounded-full object-cover"
               src="{{ auth()->user()?->avatar
             ? asset('storage/' . auth()->user()->avatar)
-            : asset('default-avatar.png') }}"> </button>
+            : asset('storage/avatars/images.png') }}"> </button>
 
           <!-- Dropdown Card (Click trigger via JS) -->
           <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 origin-top-right rounded-xl border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-800 dark:bg-slate-900 focus:outline-none transition-all">
