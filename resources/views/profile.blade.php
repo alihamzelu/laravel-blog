@@ -142,7 +142,7 @@
           <h3 class="text-lg font-bold text-slate-900 dark:text-white">No Articles Found</h3>
           <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 max-w-xs">It looks like there aren't any posts published yet. Stay tuned or create the very first one!</p>
           @auth
-          <a href="{{ route('create') }}" class="mt-5 inline-flex items-center space-x-2 bg-indigo-600 text-white dark:bg-emerald-500 dark:text-night font-bold text-xs px-4 py-2.5 rounded-xl hover:opacity-95 transition-all shadow-sm">
+          <a href="{{ route('posts.create') }}" class="mt-5 inline-flex items-center space-x-2 bg-indigo-600 text-white dark:bg-emerald-500 dark:text-night font-bold text-xs px-4 py-2.5 rounded-xl hover:opacity-95 transition-all shadow-sm">
             <svg xmlns="http://www.w3.org/2000/xl" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
@@ -172,10 +172,8 @@
     let internalPostCount = 3;
 
     function handleNewPost() {
-      // Logic handled via default href route link
     }
 
-    // منطق جابجایی تم و منوی موبایل
     const themeToggleBtn = document.getElementById('theme-toggle');
     const darkIcon = document.getElementById('theme-toggle-dark-icon');
     const lightIcon = document.getElementById('theme-toggle-light-icon');
