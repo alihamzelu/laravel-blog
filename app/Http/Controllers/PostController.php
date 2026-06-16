@@ -11,12 +11,12 @@ use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
-    
+
     public function edit(Post $post)
     {
         $categories = Category::all();
 
-        
+
         return view('posts.edit', compact('post', 'categories'));
     }
     public function destroy(Post $post)
@@ -46,7 +46,7 @@ class PostController extends Controller
     {
         $categories = Category::all();
         $users = Auth::user();
-        
+
         $name = $users->name;
 
         return view("components.header", compact("categories", "name"));
@@ -59,10 +59,15 @@ class PostController extends Controller
     }
     public function show(Post $post)
     {
-        $post->load(['category', 'user']);
+        $post->load(['category', 'user'])->loadCount('likes');
+
         $categories = Category::all();
-        $posts = Post::with(['category', 'user'])->latest()->get();
-        return view('posts.show', compact('post', "categories", 'posts'));
+
+        $posts = Post::with(['category', 'user'])
+            ->latest()
+            ->get();
+
+        return view('posts.show', compact('post', 'categories', 'posts'));
     }
 
     public function home()
@@ -122,7 +127,7 @@ class PostController extends Controller
 
         $request->user()->posts()->create([
             'title' => $validated['title'],
-            'slug' => Str::slug($validated['title']).'-'.Str::random(6),
+            'slug' => Str::slug($validated['title']) . '-' . Str::random(6),
             'content' => $validated['content'],
             'category_id' => $validated['category_id'],
             'image' => $imagePath,

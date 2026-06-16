@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" class="light">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mastering Tailwind CSS Layouts - DevBlog</title>
+  <title>{{ $post->title }}</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -11,22 +12,23 @@
       theme: {
         extend: {
           colors: {
-            night: '#0B1120', 
+            night: '#0B1120',
           }
         },
       },
     }
   </script>
 </head>
+
 <body class="bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-night dark:text-slate-100 font-sans antialiased overflow-x-hidden">
 
   @include('components.header')
 
   <main class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
     <div class="grid gap-10 lg:grid-cols-3 items-start">
-      
+
       <div class="lg:col-span-2">
-        
+
         <header class="mb-8">
           <a href="{{ route('articles.index', ['category' => $post->category->slug]) }}" class="inline-flex rounded-full bg-indigo-100 px-3 py-1 text-xs font-bold text-indigo-700 dark:bg-emerald-500/20 dark:text-emerald-400 mb-4 transition-colors">
             {{ $post->category->name }}
@@ -34,7 +36,7 @@
           <h1 class="text-3xl font-extrabold tracking-tight sm:text-4xl lg:text-5xl text-slate-900 dark:text-white leading-tight transition-colors">
             {{ $post->title }}
           </h1>
-          
+
           <div class="flex items-center space-x-4 border-b border-slate-200 dark:border-slate-800 py-6 mt-6 transition-colors">
             <img class="h-11 w-11 rounded-full object-cover" src="{{ asset('storage/' . $post->user->avatar) }}" alt="">
             <div class="text-sm">
@@ -55,11 +57,27 @@
         </div>
 
         <div class="border-y border-slate-200 dark:border-slate-800 py-6 my-10 flex items-center justify-between transition-colors">
-          <div class="flex items-center space-x-2">
-            <button class="flex items-center space-x-1.5 rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 dark:border-slate-800 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904M14.25 9.664V6c0-1.152-.26-2.243-.723-3.218M5.904 19.5H3c-1.105 0-2-.895-2-2V10c0-1.105.895-2 2-2h2.904m0 11.5V8.25" /></svg>
-              <span>412 Likes</span>
-            </button>
+          <div class="flex items-center">
+            <form action="{{ route('posts.like', $post) }}" method="POST">
+              @csrf
+
+              <button
+                type="submit"
+                class="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition-all hover:bg-slate-100 hover:text-red-500 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  class="w-5 h-5">
+                  <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904M14.25 9.664V6c0-1.152-.26-2.243-.723-3.218M5.904 19.5H3c-1.105 0-2-.895-2-2V10c0-1.105.895-2 2-2h2.904m0 11.5V8.25" />
+                </svg>
+
+                <span>{{ $post->likes_count }}</span>
+              </button>
+            </form>
           </div>
           <div class="flex items-center space-x-2">
             <a href="#" class="text-xs font-semibold text-slate-400 hover:text-indigo-600 dark:hover:text-emerald-400 transition-colors">Share to Twitter</a>
@@ -68,7 +86,8 @@
 
         <section class="mt-12">
           <h3 class="text-xl font-black text-slate-900 dark:text-white mb-6">Discussion ({{ $post->comments->count() }})</h3>
-          
+          @auth
+
           <form action="{{ route('comments.store', $post) }}" method="POST" class="mb-8">
             @csrf
 
@@ -82,9 +101,15 @@
             </div>
           </form>
 
+
+          @else
+          <p class="text-sm text-slate-500 dark:text-slate-400 mb-4">Please <a href="{{ route('login') }}" class="text-indigo-600 dark:text-emerald-400 hover:underline">log in</a> to join the discussion.</p>
+
+          @endauth
+
           <div class="space-y-5">
             @foreach ($post->comments as $comment)
-            
+
             <div class="flex items-start space-x-4 text-sm">
               <img class="h-9 w-9 rounded-full object-cover flex-shrink-0" src="{{ asset('storage/' . $comment->user->avatar) }}" alt="{{ $comment->user->name }}">
               <div class="flex-grow bg-white border border-slate-200 dark:bg-slate-900/40 dark:border-slate-800 rounded-2xl p-4 transition-colors">
@@ -137,35 +162,36 @@
     const closeIcon = document.getElementById('close-icon');
 
     if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-        if (lightIcon) lightIcon.classList.remove('hidden');
+      document.documentElement.classList.add('dark');
+      if (lightIcon) lightIcon.classList.remove('hidden');
     } else {
-        document.documentElement.classList.remove('dark');
-        if (darkIcon) darkIcon.classList.remove('hidden');
+      document.documentElement.classList.remove('dark');
+      if (darkIcon) darkIcon.classList.remove('hidden');
     }
 
     if (themeToggleBtn) {
       themeToggleBtn.addEventListener('click', function() {
-          if (darkIcon) darkIcon.classList.toggle('hidden');
-          if (lightIcon) lightIcon.classList.toggle('hidden');
+        if (darkIcon) darkIcon.classList.toggle('hidden');
+        if (lightIcon) lightIcon.classList.toggle('hidden');
 
-          if (document.documentElement.classList.contains('dark')) {
-              document.documentElement.classList.remove('dark');
-              localStorage.setItem('color-theme', 'light');
-          } else {
-              document.documentElement.classList.add('dark');
-              localStorage.setItem('color-theme', 'dark');
-          }
+        if (document.documentElement.classList.contains('dark')) {
+          document.documentElement.classList.remove('dark');
+          localStorage.setItem('color-theme', 'light');
+        } else {
+          document.documentElement.classList.add('dark');
+          localStorage.setItem('color-theme', 'dark');
+        }
       });
     }
 
     if (mobileMenuBtn) {
       mobileMenuBtn.addEventListener('click', () => {
-          if (mobileMenu) mobileMenu.classList.toggle('hidden');
-          if (hamburgerIcon) hamburgerIcon.classList.toggle('hidden');
-          if (closeIcon) closeIcon.classList.toggle('hidden');
+        if (mobileMenu) mobileMenu.classList.toggle('hidden');
+        if (hamburgerIcon) hamburgerIcon.classList.toggle('hidden');
+        if (closeIcon) closeIcon.classList.toggle('hidden');
       });
     }
   </script>
 </body>
+
 </html>

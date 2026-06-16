@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\LikeController;
 
 Route::get('/', [PostController::class, 'home'])->name('home');
 Route::get('/articles', [PostController::class, 'articles'])->name('articles.index');
@@ -16,6 +16,9 @@ Route::delete('/posts/{post}', [PostController::class,'destroy'] )->name('posts.
 Route::get('/posts/{post}/edit', [PostController::class,'edit'] )->name('posts.edit');
 Route::put('/posts/{post}', [PostController::class,'update'] )->name('posts.update');
 
+
+Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])
+    ->name('posts.like');
 
 
 Route::post('/posts/{post}/comments', [CommentController::class,'store'] )->name('comments.store');

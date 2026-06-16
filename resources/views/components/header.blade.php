@@ -5,7 +5,7 @@
 
       <!-- Left Section: Logo & Main Navigation -->
       <div class="flex items-center space-x-8">
-        <a href="" class="text-2xl font-black tracking-tight text-indigo-600 dark:text-emerald-400">
+        <a href="{{ route('home') }}" class="text-2xl font-black tracking-tight text-indigo-600 dark:text-emerald-400">
           SimpleBlog.
         </a>
 
