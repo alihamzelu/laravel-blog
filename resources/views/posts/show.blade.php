@@ -144,6 +144,42 @@
           </p>
           <a href="{{ route('preview', $post->user) }}" class="inline-block mt-3 text-xs font-bold text-indigo-600 dark:text-emerald-400 hover:underline">View Profile &rarr;</a>
         </div>
+
+
+        
+        <div class="rounded-3xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-800/40">
+
+          <h3 class="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">
+            Related Posts
+          </h3>
+
+          <div class="space-y-4">
+            @foreach ($relatedPosts as $relatedPost)
+            
+              <a href="{{ route('posts.show', $relatedPost) }}" class="flex gap-4 group">
+
+                <img
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c"
+                  class="h-12 w-12 rounded-xl object-cover transition group-hover:scale-105"
+                  alt="">
+
+                <div class="flex-1">
+                  <h4 class="text-sm font-semibold text-slate-900 dark:text-slate-100 line-clamp-2 group-hover:text-indigo-600 transition">
+                    How to build a modern Laravel blog system
+                  </h4>
+
+                  <p class="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    5 min read • Development
+                  </p>
+                </div>
+              </a>
+
+            @endforeach
+
+
+          </div>
+        </div>
+
       </aside>
 
     </div>

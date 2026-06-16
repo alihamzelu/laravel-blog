@@ -80,18 +80,15 @@
 
 
   <script>
-    // Theme Toggle Elements
     const themeToggleBtn = document.getElementById('theme-toggle');
     const darkIcon = document.getElementById('theme-toggle-dark-icon');
     const lightIcon = document.getElementById('theme-toggle-light-icon');
 
-    // Mobile Menu Elements
     const mobileMenuBtn = document.getElementById('mobile-menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
     const hamburgerIcon = document.getElementById('hamburger-icon');
     const closeIcon = document.getElementById('close-icon');
 
-    // 1. Theme Configuration Logic
     if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
       lightIcon.classList.remove('hidden');
@@ -113,7 +110,6 @@
       }
     });
 
-    // 2. Mobile Menu Toggle Logic
     mobileMenuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
       hamburgerIcon.classList.toggle('hidden');

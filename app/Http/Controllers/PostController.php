@@ -67,7 +67,13 @@ class PostController extends Controller
             ->latest()
             ->get();
 
-        return view('posts.show', compact('post', 'categories', 'posts'));
+        $relatedPosts = Post::where('category_id', $post->category_id)
+            ->where('id', '!=', $post->id)
+            ->latest()
+            ->take(5)   
+            ->get();
+
+        return view('posts.show', compact('post', 'categories', 'posts', 'relatedPosts'));
     }
 
     public function home()

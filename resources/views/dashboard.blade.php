@@ -6,10 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Creator Dashboard</title>
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Tailwind Configuration for Dark Mode -->
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -26,32 +24,26 @@
 
 <body class="bg-slate-50 text-slate-900 transition-colors duration-300 dark:bg-night dark:text-slate-100 font-sans antialiased overflow-x-hidden">
 
-  <!-- Navigation -->
 
   @include('components.header')
 
-  <!-- Dashboard Container -->
   <main class="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
 
-    <!-- Welcome Header -->
     <div class="flex flex-col md:flex-row md:items-center md:justify-between border-b border-slate-200 dark:border-slate-800 pb-6 mb-8 gap-4 transition-colors">
       <div>
         <h1 class="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white sm:text-3xl">Welcome back, Alex</h1>
         <p class="mt-1 text-sm text-slate-500 dark:text-slate-400">Manage your blog articles, customize layouts, and review content performance metrics.</p>
       </div>
       <div class="flex items-center space-x-3">
-        <!-- Quick Nav to Preview Mode Page -->
         <a href="{{ route('preview', auth()->user()) }}" class="inline-flex items-center space-x-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700/60 text-slate-700 dark:text-slate-200 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
           <span>View Profile Preview</span>
         </a>
-        <!-- Quick Nav to Edit Info Page -->
         <a href="{{ route('profile.edit') }}" class="inline-flex items-center space-x-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-emerald-400 dark:text-night dark:hover:bg-emerald-500 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
           <span>Edit Profile Settings</span>
         </a>
       </div>
     </div>
 
-    <!-- Content Management Block -->
     <section>
       <div class="flex items-center justify-between mb-4">
         <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
@@ -64,7 +56,6 @@
         </button>
       </div>
 
-      <!-- Desktop Table / Responsive Cards Layout Wrapper -->
       <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900/20 transition-colors">
         <div class="overflow-x-auto">
           <table class="w-full border-collapse text-left text-sm text-slate-500 dark:text-slate-400">
@@ -115,7 +106,6 @@
     </section>
   </main>
 
-  <!-- Script Engine for Dark/Light Themes -->
   <script>
     const themeToggleBtn = document.getElementById('theme-toggle');
     const darkIcon = document.getElementById('theme-toggle-dark-icon');
