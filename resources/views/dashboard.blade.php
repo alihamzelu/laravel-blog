@@ -41,6 +41,11 @@
         <a href="{{ route('profile.edit') }}" class="inline-flex items-center space-x-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-emerald-400 dark:text-night dark:hover:bg-emerald-500 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
           <span>Edit Profile Settings</span>
         </a>
+        @if (auth()->user()->admin)
+        <a href="{{url('/admin')}}" class="inline-flex items-center space-x-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white dark:bg-blue-400 dark:text-night dark:hover:bg-emerald-500 px-4 py-2.5 text-sm font-bold shadow-sm transition-all">
+          <span>Admin Panel</span>
+        </a>
+        @endif
       </div>
     </div>
 

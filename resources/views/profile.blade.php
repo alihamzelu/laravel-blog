@@ -32,7 +32,7 @@
       <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
 
         <div class="flex items-center space-x-5">
-          <img class="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover ring-4 ring-slate-100 dark:ring-slate-800" src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('default-avatar.png') }}" alt="Alex Reed avatar">
+          <img class="h-16 w-16 sm:h-20 sm:w-20 rounded-full object-cover ring-4 ring-slate-100 dark:ring-slate-800" src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('default-avatar.png') }}" alt="avatar">
           <div>
             <h1 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">{{ $user->name }}</h1>
             <p class="text-xs sm:text-sm text-slate-400 dark:text-slate-500 font-medium">{{ $user->job }}</p>
@@ -142,7 +142,7 @@
           <h3 class="text-lg font-bold text-slate-900 dark:text-white">No Articles Found</h3>
           <p class="mt-1 text-sm text-slate-500 dark:text-slate-400 max-w-xs">It looks like there aren't any posts published yet. Stay tuned or create the very first one!</p>
           @auth
-          <a href="{{ route('posts.create') }}" class="mt-5 inline-flex items-center space-x-2 bg-indigo-600 text-white dark:bg-emerald-500 dark:text-night font-bold text-xs px-4 py-2.5 rounded-xl hover:opacity-95 transition-all shadow-sm">
+          <a href="{{ route('create') }}" class="mt-5 inline-flex items-center space-x-2 bg-indigo-600 text-white dark:bg-emerald-500 dark:text-night font-bold text-xs px-4 py-2.5 rounded-xl hover:opacity-95 transition-all shadow-sm">
             <svg xmlns="http://www.w3.org/2000/xl" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
