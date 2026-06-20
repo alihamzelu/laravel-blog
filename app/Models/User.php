@@ -14,7 +14,7 @@ use App\Models\Post;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
-#[Fillable(['name', 'email', 'password','username','bio','job','avatar'])]
+#[Fillable(['name', 'email', 'password', 'username', 'bio', 'job', 'avatar','admin'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail, FilamentUser
 {
@@ -34,13 +34,16 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
         ];
     }
 
-    public function posts(){
+    public function posts()
+    {
         return $this->hasMany(Post::class);
     }
-    public function comments(){
+    public function comments()
+    {
         return $this->hasMany(Comment::class);
     }
-    public function likes(){
+    public function likes()
+    {
         return $this->hasMany(Like::class);
     }
 

@@ -29,7 +29,7 @@ Route::get('/dashboard', [PostController::class, 'dashboard'])
     ->name('dashboard');
 
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'avatar'])->group(function () {
     Route::get('/create', [PostController::class, 'create'])->name('create');
     
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');

@@ -12,9 +12,7 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Show profile page
-     */
+
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -22,19 +20,14 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update profile (name, email, job, bio, avatar)
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
 
         $data = $request->validated();
 
-        // 🔥 avatar upload
         if ($request->hasFile('avatar')) {
 
-            // delete old avatar if exists
             if ($user->avatar) {
                 Storage::disk('public')->delete($user->avatar);
             }
@@ -42,20 +35,16 @@ class ProfileController extends Controller
             $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
         }
 
-        // 🔥 reset email verification if changed
         if ($user->email !== $data['email']) {
             $data['email_verified_at'] = null;
         }
 
-        // 🔥 update user
         $user->update($data);
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
-    /**
-     * Delete account
-     */
+
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [

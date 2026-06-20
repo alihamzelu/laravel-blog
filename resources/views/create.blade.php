@@ -11,6 +11,7 @@
   </script>
 </head>
 
+
 <body class="bg-slate-50 text-slate-900 dark:bg-night dark:text-slate-100 font-sans antialiased min-h-screen transition-colors duration-200">
 
   @include('components.header')

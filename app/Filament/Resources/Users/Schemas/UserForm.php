@@ -7,6 +7,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Hash;
 
 class UserForm
 {
@@ -14,10 +15,8 @@ class UserForm
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('username')
-                    ->required(),
+                TextInput::make('name'),
+                TextInput::make('username'),
                 Textarea::make('bio')
                     ->default(null)
                     ->columnSpanFull(),
@@ -25,16 +24,14 @@ class UserForm
                     ->default(null),
                 TextInput::make('email')
                     ->label('Email address')
-                    ->email()
-                    ->required(),
+                    ->email(),
                 DateTimePicker::make('email_verified_at'),
-                TextInput::make('password')
-                    ->password()
-                    ->required(),
+                
                 TextInput::make('avatar')
                     ->default(null),
                 Toggle::make('admin')
-                    ->required(),
+                    ->default(false)
+                    ->dehydrated(true),
             ]);
     }
 }
