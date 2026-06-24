@@ -57,4 +57,9 @@ class Post extends Model
             $post->user_id = auth()->id();
         });
     }
+
+    public function bookmarksByUsers()
+    {
+        return $this->belongsToMany(User::class, 'bookmarks')->withTimestamps();
+    }
 }

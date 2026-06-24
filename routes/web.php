@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\BookmarkController;
 
 Route::get('/', [PostController::class, 'home'])->name('home');
 Route::get('/articles', [PostController::class, 'articles'])->name('articles.index');
@@ -15,6 +16,11 @@ Route::get('/profile/{user}', [UserController::class,'show'] )->name('preview');
 Route::delete('/posts/{post}', [PostController::class,'destroy'] )->name('posts.destroy');
 Route::get('/posts/{post}/edit', [PostController::class,'edit'] )->name('posts.edit');
 Route::put('/posts/{post}', [PostController::class,'update'] )->name('posts.update');
+
+
+Route::post('/posts/{post}/bookmark', [BookmarkController::class, 'toggle'])
+    ->name('posts.bookmark');
+
 
 
 Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])

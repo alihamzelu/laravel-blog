@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Bookmark;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+
+    public function bookmarkindex()
+    {
+        $bookmark = 
+    }
+
 
     public function edit(Post $post)
     {
