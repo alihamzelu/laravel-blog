@@ -6,7 +6,6 @@
 
   <form id="send-verification" method="post" action="{{ route('verification.send') }}">@csrf</form>
 
-  {{-- 👈 اتریبیوت enctype برای ارسال فایل به فرم اضافه شد --}}
   <form method="post" action="{{ route('profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
     @csrf
     @method('patch')
@@ -16,8 +15,8 @@
       <div class="flex items-center space-x-4">
         
         <div class="flex-shrink-0 h-16 w-16 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700 shadow-sm bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
-          @if($user->avatar)
-            <img src="{{ asset('storage/' . $user->avatar) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
+          @if($user->profile?->avatar)
+            <img src="{{ asset('storage/'.$user->profile->avatar) }}" class="w-full h-full object-cover">
           @else
             <svg class="w-8 h-8 text-slate-400 dark:text-slate-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
@@ -61,13 +60,13 @@
 
     <div>
       <label for="job" class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">Job Title</label>
-      <input type="text" id="job" name="job" value="{{ old('job', $user->job) }}" class="w-full bg-slate-50 dark:bg-slate-800/60 border @error('job') border-red-500 @else border-slate-200 dark:border-slate-700 @enderror rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all" placeholder="e.g. Full-Stack Developer" />
+      <input type="text" id="job" name="job" value="{{ old('job', $user->profile?->job) }}" class="w-full bg-slate-50 dark:bg-slate-800/60 border @error('job') border-red-500 @else border-slate-200 dark:border-slate-700 @enderror rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all" placeholder="e.g. Full-Stack Developer" />
       @error('job') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
     </div>
 
     <div>
       <label for="bio" class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block mb-2">Biography</label>
-      <textarea id="bio" name="bio" rows="4" class="w-full bg-slate-50 dark:bg-slate-800/60 border @error('bio') border-red-500 @else border-slate-200 dark:border-slate-700 @enderror rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all resize-none" placeholder="Tell us about yourself, your skills, or what you write about...">{{ old('bio', $user->bio) }}</textarea>
+      <textarea id="bio" name="bio" rows="4" class="w-full bg-slate-50 dark:bg-slate-800/60 border @error('bio') border-red-500 @else border-slate-200 dark:border-slate-700 @enderror rounded-xl px-4 py-2.5 text-sm text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all resize-none" placeholder="Tell us about yourself, your skills, or what you write about...">{{ old('bio', $user->profile?->bio) }}</textarea>
       @error('bio') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
     </div>
 

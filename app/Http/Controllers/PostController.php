@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Gallery;
+
 use App\Models\Bookmark;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,10 +15,6 @@ use Illuminate\Support\Str;
 class PostController extends Controller
 {
 
-    public function bookmarkindex()
-    {
-        $bookmark = 
-    }
 
 
     public function edit(Post $post)
@@ -38,7 +36,9 @@ class PostController extends Controller
 
     public function dashboard()
     {
-
+        $galleries = Gallery::where('user_id', auth()->id())
+            ->latest()
+            ->get();
         $user = Auth::user();
 
         $posts = $user->posts()
@@ -46,7 +46,7 @@ class PostController extends Controller
             ->latest()
             ->get();
 
-        return view("dashboard", compact("posts"));
+        return view("dashboard", compact("posts","galleries"));
     }
 
     public function header()

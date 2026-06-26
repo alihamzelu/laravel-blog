@@ -58,8 +58,14 @@
           </div>
           <div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-700/50 transition-colors duration-200">
             <div class="flex items-center space-x-3">
-              <img class="h-8 w-8 rounded-full" src="{{ asset('storage/' . $post->user->avatar) }}" alt="Author">
-              <a href="{{ route('preview', $post->user) }}">
+              @php
+                  $avatar = $post->user->profile?->avatar;
+              @endphp
+
+              <img class="h-8 w-8 rounded-full"
+                  src="{{ $avatar ? asset('storage/' . $avatar) : asset('images/default-avatar.png') }}"
+                  alt="Author">             
+                  <a href="{{ route('preview', $post->user) }}">
                 <span class="text-sm font-medium text-slate-900 dark:text-slate-200 transition-colors duration-200">{{ $post->user->name }}</span>
               </a>
             </div>

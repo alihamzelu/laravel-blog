@@ -34,6 +34,7 @@
             </div>
           </div>
           <a href="{{ route('articles.index') }}" class="{{ request()->is('articles*') ? ' text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-emerald-400' }} text-sm font-semibold transition-colors">Articles</a>
+          <a href="{{ route('galleries.index') }}" class="{{ request()->is('galleries*') ? ' text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-emerald-400' }} text-sm font-semibold transition-colors">Gallery</a>
 
         </div>
       </div>
@@ -52,9 +53,18 @@
 
         <div class="relative">
           <button id="profile-menu-button" class="flex rounded-full focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:focus:ring-emerald-400 transition-all">
-            <img class="h-8 w-8 rounded-full object-cover"
-              src="{{ avatarUrl() }}"> </button>
-
+            @if(auth()->check())
+                <img class="h-8 w-8 rounded-full object-cover"
+                    src="{{ auth()->user()->profile?->avatar
+                        ? asset('storage/' . auth()->user()->profile->avatar)
+                        : asset('storage/images/default-avatar.png') }}"
+                    alt="Avatar"
+                >
+            @else
+              <img class="h-8 w-8 rounded-full object-cover" src="{{ asset('storage/images/default-avatar.png') }}" alt="">
+            @endif
+          </button>
+          
           <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 origin-top-right rounded-xl border border-slate-200 bg-white py-1 shadow-lg dark:border-slate-800 dark:bg-slate-900 focus:outline-none transition-all">
 
             <div class="px-4 py-2 border-b border-slate-100 dark:border-slate-800">

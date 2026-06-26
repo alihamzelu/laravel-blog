@@ -14,7 +14,7 @@ use App\Models\Post;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
-#[Fillable(['name', 'email', 'password', 'username', 'bio', 'job', 'avatar', 'admin'])]
+#[Fillable(['name', 'email', 'password', 'username', 'bio', 'job', 'admin'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements MustVerifyEmail, FilamentUser
 {
@@ -61,4 +61,13 @@ class User extends Authenticatable implements MustVerifyEmail, FilamentUser
         return $this->belongsToMany(Post::class, 'bookmarks')->withTimestamps();
     }
 
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
+    }
+
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class);
+    }
 }

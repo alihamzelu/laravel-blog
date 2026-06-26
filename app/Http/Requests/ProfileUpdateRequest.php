@@ -20,6 +20,12 @@ class ProfileUpdateRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'bio' => ['nullable', 'string', 'max:1000'],
             'job' => ['nullable', 'string', 'max:100'],
+            'avatar' => [
+                'nullable',
+                'image',
+                'mimes:jpg,jpeg,png,webp',
+                'max:2048'
+            ],
             'email' => [
                 'required',
                 'string',
@@ -27,7 +33,7 @@ class ProfileUpdateRequest extends FormRequest
                 'email',
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
-                ],
+            ],
         ];
     }
 }

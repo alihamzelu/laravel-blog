@@ -25,4 +25,9 @@ class Category extends Model
             $category->slug = Str::slug($category->name);
         });
     }
+
+    public function galleries()
+    {
+        return $this->hasMany(Gallery::class);
+    }
 }

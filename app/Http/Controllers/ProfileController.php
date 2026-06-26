@@ -24,24 +24,39 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        $data = $request->validated();
+        $user->update([
+            'name'=> $request->name,
+            'email'=> $request->email,
+        ]);
+
+        $profileData = [
+            'bio'=> $request->bio,
+            'job'=> $request->job,
+        ];
 
         if ($request->hasFile('avatar')) {
-
-            if ($user->avatar) {
-                Storage::disk('public')->delete($user->avatar);
+        
+            if($user->profile?->avatar){
+                Storage::disk('public')->delete($user->profile->avatar);
             }
 
-            $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
+            $profileData['avatar'] = $request
+                ->file('avatar')
+                ->store('avatars','public');
+        
         }
 
-        if ($user->email !== $data['email']) {
-            $data['email_verified_at'] = null;
-        }
 
-        $user->update($data);
+        $user->profile()->updateOrCreate(
+            ['user_id'=> $user->id],
+            $profileData
+        );
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+
+        return back()->with('status', 'profile-updated');
+
+
+
     }
 
 

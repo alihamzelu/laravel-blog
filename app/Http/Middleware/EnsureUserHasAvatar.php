@@ -17,8 +17,9 @@ class EnsureUserHasAvatar
     {
         $user = auth()->user();
 
-        if (!$user || !$user->avatar) {
-            return redirect()->route('profile.edit')->with('error', 'Please upload your avatar before creating a post.');;
+        if (!auth()->user()?->profile?->avatar) {
+            return redirect()->route('profile.edit')
+                ->with('error', 'Please upload your avatar before creating a post.');
         }
 
         return $next($request);
