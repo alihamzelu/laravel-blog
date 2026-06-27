@@ -19,8 +19,6 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('username')
                     ->searchable(),
-                TextColumn::make('job')
-                    ->searchable(),
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
@@ -35,10 +33,15 @@ class UsersTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('avatar')
-                    ->searchable(),
-                IconColumn::make('admin')
-                    ->boolean(),
+                TextColumn::make('roles.name')
+                    ->label('Roles')
+                    ->badge()
+                    ->separator(','),
+
+                TextColumn::make('permissions.name')
+                    ->label('Permissions')
+                    ->badge()
+                    ->separator(','),
             ])
             ->filters([
                 //

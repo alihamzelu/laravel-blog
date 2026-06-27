@@ -8,6 +8,9 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Hash;
+use Filament\Forms\Components\Select;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserForm
 {
@@ -17,21 +20,23 @@ class UserForm
             ->components([
                 TextInput::make('name'),
                 TextInput::make('username'),
-                Textarea::make('bio')
-                    ->default(null)
-                    ->columnSpanFull(),
-                TextInput::make('job')
-                    ->default(null),
                 TextInput::make('email')
                     ->label('Email address')
                     ->email(),
                 DateTimePicker::make('email_verified_at'),
-                
-                TextInput::make('avatar')
-                    ->default(null),
-                Toggle::make('admin')
-                    ->default(false)
-                    ->dehydrated(true),
+                Select::make('roles')
+                    ->label('Roles')
+                    ->relationship('roles', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
+
+                Select::make('permissions')
+                    ->label('Permissions')
+                    ->relationship('permissions', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
             ]);
     }
 }

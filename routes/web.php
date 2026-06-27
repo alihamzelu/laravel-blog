@@ -8,15 +8,16 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\ContactController;
 
 Route::get('/', [PostController::class, 'home'])->name('home');
 Route::get('/articles', [PostController::class, 'articles'])->name('articles.index');
 Route::get('/categories', [PostController::class, 'categories'])->name('categories.categories');
-Route::get('/posts/{post}', [PostController::class,'show'] )->name('posts.show');
-Route::get('/profile/{user}', [UserController::class,'show'] )->name('preview');
-Route::delete('/posts/{post}', [PostController::class,'destroy'] )->name('posts.destroy');
-Route::get('/posts/{post}/edit', [PostController::class,'edit'] )->name('posts.edit');
-Route::put('/posts/{post}', [PostController::class,'update'] )->name('posts.update');
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+Route::get('/profile/{user}', [UserController::class, 'show'])->name('preview');
+Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
 
 
 
@@ -34,17 +35,23 @@ Route::post('/gallery', [GalleryController::class, 'store'])
 Route::get('/gallery/{gallery}/edit', [GalleryController::class, 'edit'])
     ->name('gallery.edit');
 
-Route::put('/gallery/{gallery}', [GalleryController::class,'update'])
+Route::put('/gallery/{gallery}', [GalleryController::class, 'update'])
     ->name('gallery.update');
 
-Route::delete('/gallery/{gallery}', [GalleryController::class,'destroy'])
+Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy'])
     ->name('gallery.destroy');
 
 
 
 
+Route::middleware('auth')->group(function () {
 
+    Route::get('/role-request', [ContactController::class, 'index'])
+        ->name('role-request.index');
 
+    Route::post('/role-request', [ContactController::class, 'store'])
+        ->name('role-request.store');
+});
 
 
 Route::post('/posts/{post}/bookmark', [BookmarkController::class, 'toggle'])
@@ -56,7 +63,7 @@ Route::post('/posts/{post}/like', [LikeController::class, 'toggle'])
     ->name('posts.like');
 
 
-Route::post('/posts/{post}/comments', [CommentController::class,'store'] )->name('comments.store');
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])->name('comments.store');
 
 
 Route::get('/dashboard', [PostController::class, 'dashboard'])
@@ -66,7 +73,7 @@ Route::get('/dashboard', [PostController::class, 'dashboard'])
 
 Route::middleware(['auth', 'verified', 'avatar'])->group(function () {
     Route::get('/create', [PostController::class, 'create'])->name('create');
-    
+
     Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
 });
 
@@ -77,4 +84,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

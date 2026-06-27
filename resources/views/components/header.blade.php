@@ -35,6 +35,7 @@
           </div>
           <a href="{{ route('articles.index') }}" class="{{ request()->is('articles*') ? ' text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-emerald-400' }} text-sm font-semibold transition-colors">Articles</a>
           <a href="{{ route('galleries.index') }}" class="{{ request()->is('galleries*') ? ' text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-emerald-400' }} text-sm font-semibold transition-colors">Gallery</a>
+          <a href="{{ route('role-request.index') }}" class="{{ request()->is('role-request*') ? ' text-indigo-600 dark:text-emerald-400' : 'text-slate-600 hover:text-indigo-600 dark:text-slate-300 dark:hover:text-emerald-400' }} text-sm font-semibold transition-colors">Role Request</a>
 
         </div>
       </div>
