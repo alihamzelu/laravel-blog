@@ -1,4 +1,6 @@
 <?php
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -9,18 +11,38 @@ use App\Http\Controllers\LikeController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DonateController;
 
 Route::get('/', [PostController::class, 'home'])->name('home');
+
+
 Route::get('/articles', [PostController::class, 'articles'])->name('articles.index');
+
+
 Route::get('/categories', [PostController::class, 'categories'])->name('categories.categories');
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+
 Route::get('/profile/{user}', [UserController::class, 'show'])->name('preview');
+
+
+
+
+Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
 Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
 
 
 
+
+
+
+Route::get('/donate', [DonateController::class,'index']);
+Route::post('/donate/pay', [DonateController::class, 'pay']);
+Route::get('/donate/callback', [DonateController::class,'callback']);
+Route::get('/donate/success', [DonateController::class, 'success']);
+Route::get('/donate/failed', [DonateController::class, 'failed']);
+Route::get('/donate/donors', [DonateController::class, 'donors'])->name('donate.donors');
 
 
 Route::get('/galleries', [GalleryController::class, 'index'])
