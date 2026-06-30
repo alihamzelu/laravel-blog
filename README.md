@@ -41,6 +41,8 @@ A modern blog platform built with Laravel and Filament, featuring authentication
 <img width="1907" height="946" alt="Screenshot 2026-06-30 213021" src="https://github.com/user-attachments/assets/79e5c6f6-8ce8-422f-9fd0-b69cb90c17cf" />
 <img width="1919" height="952" alt="Screenshot 2026-06-30 213053" src="https://github.com/user-attachments/assets/ec3ce5cb-97e6-4fb8-97be-baf67b2457b4" />
 <img width="1899" height="921" alt="Screenshot 2026-06-30 213102" src="https://github.com/user-attachments/assets/b5273e2b-2f75-4f3b-a99c-94f75ad2ea74" />
+<img width="1902" height="944" alt="Screenshot 2026-06-30 224001" src="https://github.com/user-attachments/assets/252ff495-f11e-44be-9b81-6546c86dae06" />
+<img width="1900" height="946" alt="Screenshot 2026-06-30 224108" src="https://github.com/user-attachments/assets/61b28e5e-6283-4cb9-8f59-1b16f8df8349" />
 <img width="1222" height="799" alt="Screenshot 2026-06-30 213138" src="https://github.com/user-attachments/assets/5339edc8-4673-4017-bcd5-638945d2a6c9" />
 <img width="1904" height="951" alt="Screenshot 2026-06-30 213149" src="https://github.com/user-attachments/assets/68d1e348-5d82-4f43-b155-651abe292569" />
 <img width="1899" height="947" alt="Screenshot 2026-06-30 213157" src="https://github.com/user-attachments/assets/c00fbc4e-de69-4933-8b1a-bf2de076210f" />
