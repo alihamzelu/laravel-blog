@@ -59,13 +59,13 @@
           <div class="mt-6 flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-700/50 transition-colors duration-200">
             <div class="flex items-center space-x-3">
               @php
-                  $avatar = $post->user->profile?->avatar;
+              $avatar = $post->user->profile?->avatar;
               @endphp
 
               <img class="h-8 w-8 rounded-full"
-                  src="{{ $avatar ? asset('storage/' . $avatar) : asset('images/default-avatar.png') }}"
-                  alt="Author">             
-                  <a href="{{ route('preview', $post->user) }}">
+                src="{{ $avatar ? asset('storage/' . $avatar) : asset('images/default-avatar.png') }}"
+                alt="Author">
+              <a href="{{ route('preview', $post->user) }}">
                 <span class="text-sm font-medium text-slate-900 dark:text-slate-200 transition-colors duration-200">{{ $post->user->name }}</span>
               </a>
             </div>
@@ -76,10 +76,37 @@
 
       @endforeach
 
-
-
-
     </div>
+
+    <!-- Gallery Section -->
+    <div class="mt-24 border-t border-slate-200 dark:border-slate-700/50 pt-16">
+      <div class="mb-12">
+        <h2 class="text-3xl font-extrabold tracking-tight sm:text-4xl text-slate-900 dark:text-white transition-colors duration-300">
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-emerald-400 dark:to-cyan-400 transition-colors duration-300">Gallery</span>
+        </h2>
+        <p class="mt-2 text-lg text-slate-500 dark:text-slate-400 transition-colors duration-300">
+          Visual stories and moments
+        </p>
+      </div>
+
+      <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        @foreach ($galleries as $item)
+        <div class="group relative overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 transition-all duration-200 ease-in-out hover:-translate-y-1.5 hover:shadow-xl dark:bg-slate-800/50 dark:ring-slate-700 dark:hover:ring-emerald-500/50 dark:hover:shadow-emerald-500/10">
+          <div class="relative overflow-hidden h-56">
+            <img class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-110"
+              src="{{ asset('storage/'.$item->image) }}"
+              alt="{{ $item->title }}">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+          </div>
+          <div class="absolute bottom-0 left-0 right-0 p-4 translate-y-full transition-transform duration-300 group-hover:translate-y-0 dark:bg-gradient-to-t dark:from-slate-900 dark:to-transparent">
+            <h3 class="text-sm font-bold text-white">{{ $item->title }}</h3>
+            <p class="text-xs text-slate-200 mt-1 line-clamp-2">{{ $item->description }}</p>
+          </div>
+        </div>
+        @endforeach
+      </div>
+    </div>
+
   </main>
 
   @include('components.footer')

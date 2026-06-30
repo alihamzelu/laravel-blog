@@ -13,4 +13,33 @@ class Donation extends Model
         'status',
         'ref_id',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'amount' => 'integer',
+        ];
+    }
+
+    // Relationships
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    // Helpers (اختیاری ولی خیلی کاربردی)
+    public function isPaid(): bool
+    {
+        return $this->status === 'paid';
+    }
+
+    public function isPending(): bool
+    {
+        return $this->status === 'pending';
+    }
+
+    public function isFailed(): bool
+    {
+        return $this->status === 'failed';
+    }
 }

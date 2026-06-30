@@ -12,7 +12,6 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -25,40 +24,32 @@ class ProfileController extends Controller
         $user = $request->user();
 
         $user->update([
-            'name'=> $request->name,
-            'email'=> $request->email,
+            'name' => $request->name,
+            'email' => $request->email,
         ]);
 
         $profileData = [
-            'bio'=> $request->bio,
-            'job'=> $request->job,
+            'bio' => $request->bio,
+            'job' => $request->job,
         ];
 
         if ($request->hasFile('avatar')) {
-        
-            if($user->profile?->avatar){
+
+            if ($user->profile && $user->profile->avatar) {
                 Storage::disk('public')->delete($user->profile->avatar);
             }
 
-            $profileData['avatar'] = $request
-                ->file('avatar')
-                ->store('avatars','public');
-        
+            $profileData['avatar'] = $request->file('avatar')
+                ->store('avatars', 'public');
         }
 
-
         $user->profile()->updateOrCreate(
-            ['user_id'=> $user->id],
+            ['user_id' => $user->id],
             $profileData
         );
 
-
         return back()->with('status', 'profile-updated');
-
-
-
     }
-
 
     public function destroy(Request $request): RedirectResponse
     {
@@ -69,6 +60,10 @@ class ProfileController extends Controller
         $user = $request->user();
 
         Auth::logout();
+
+        if ($user->profile && $user->profile->avatar) {
+            Storage::disk('public')->delete($user->profile->avatar);
+        }
 
         $user->delete();
 

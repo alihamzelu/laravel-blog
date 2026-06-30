@@ -1,26 +1,42 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Post;
 use Illuminate\Support\Facades\Auth;
-
-use Illuminate\Http\Request;
+use App\Notifications\PostLikedNotification;
 
 class LikeController extends Controller
 {
     public function toggle(Post $post)
     {
-        $like =$post->likes()
-            ->where("user_id",Auth::id())
+        $user = Auth::user();
+
+        if (! $user) {
+            abort(403, 'Login required');
+        }
+
+        $like = $post->likes()
+            ->where('user_id', $user->id)
             ->first();
-        if($like){
+
+        if ($like) {
+
             $like->delete();
-        }
-        else{
+
+        } else {
+
             $post->likes()->create([
-                "user_id"=>Auth::id()
+                'user_id' => $user->id,
             ]);
+
+            if ($post->user_id !== $user->id) {
+                $post->user->notify(
+                    new PostLikedNotification($user, $post)
+                );
+            }
         }
+
         return back();
     }
 }

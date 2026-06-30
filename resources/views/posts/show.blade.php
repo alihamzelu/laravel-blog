@@ -38,9 +38,9 @@
           </h1>
 
           <div class="flex items-center space-x-4 border-b border-slate-200 dark:border-slate-800 py-6 mt-6 transition-colors">
-            <img class="h-11 w-11 rounded-full object-cover" src="{{ asset('storage/' . $post->user->avatar) }}" alt="">
+            <img class="h-11 w-11 rounded-full object-cover" src="{{ asset('storage/' . $post->user->profile->avatar) }}" alt="">
             <div class="text-sm">
-              <p class="font-bold text-slate-900 dark:text-slate-200">{{ $post->user->name }}</p>
+              <p class="font-bold text-slate-900 dark:text-slate-200">{{ $post->user->username }}</p>
               <div class="flex items-center space-x-2 text-xs text-slate-400 mt-0.5">
                 <span>Published {{ $post->published_at }}</span>
               </div>
@@ -56,40 +56,57 @@
           <p>{{ $post->content }}</p>
         </div>
 
+        <!-- Like & Bookmark Actions Section -->
         <div class="border-y border-slate-200 dark:border-slate-800 py-6 my-10 flex items-center justify-between transition-colors">
           <div class="flex items-center space-x-3">
 
+            <!-- Like Form -->
             <form action="{{ route('posts.like', $post) }}" method="POST">
               @csrf
+              @php
+                $hasLiked = auth()->check() && auth()->user()->hasLiked($post);
+              @endphp
               <button
                 type="submit"
-                class="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition-all hover:bg-slate-100 hover:text-rose-500 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-rose-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                class="flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold transition-all 
+                {{ $hasLiked 
+                  ? 'bg-rose-50 border-rose-200 text-rose-600 dark:bg-rose-500/10 dark:border-rose-500/20 dark:text-rose-400' 
+                  : 'border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-rose-500 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-rose-400' 
+                }}">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="{{ $hasLiked ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904M14.25 9.664V6c0-1.152-.26-2.243-.723-3.218M5.904 19.5H3c-1.105 0-2-.895-2-2V10c0-1.105.895-2 2-2h2.904m0 11.5V8.25" />
                 </svg>
-                <span>{{ $post->likes_count }}</span>
+                <span>{{ $post->likes_count ?? $post->likes()->count() }}</span>
               </button>
             </form>
 
-            <form action="{{ Route('posts.bookmark', $post)  }}" method="POST">
+            <!-- Bookmark Form -->
+            <form action="{{ route('posts.bookmark', $post) }}" method="POST">
               @csrf
-
+              @php
+                $hasBookmarked = auth()->check() && auth()->user()->hasBookmarked($post);
+              @endphp
               <button
                 type="submit"
-                class="flex items-center gap-2 rounded-xl border border-slate-200 px-4 py-2 text-sm font-semibold text-slate-600 transition-all hover:bg-slate-100 hover:text-indigo-600 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-emerald-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                class="flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-semibold transition-all 
+                {{ $hasBookmarked 
+                  ? 'bg-indigo-50 border-indigo-200 text-indigo-600 dark:bg-emerald-500/10 dark:border-emerald-500/20 dark:text-emerald-400' 
+                  : 'border-slate-200 text-slate-600 hover:bg-slate-100 hover:text-indigo-600 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-emerald-400' 
+                }}">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="{{ $hasBookmarked ? 'currentColor' : 'none' }}" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0z" />
                 </svg>
-                <span>Save</span>
+                <span>{{ $hasBookmarked ? 'Saved' : 'Save' }}</span>
               </button>
             </form>
 
           </div>
           <div class="flex items-center space-x-2">
-            <a href="#" class="text-xs font-semibold text-slate-400 hover:text-indigo-600 dark:hover:text-emerald-400 transition-colors">Share to Twitter</a>
+            <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->fullUrl()) }}&text={{ urlencode($post->title) }}" target="_blank" rel="noopener noreferrer" class="text-xs font-semibold text-slate-400 hover:text-indigo-600 dark:hover:text-emerald-400 transition-colors">Share to Twitter</a>
           </div>
         </div>
 
+        <!-- Discussion Section -->
         <section class="mt-12">
           <h3 class="text-xl font-black text-slate-900 dark:text-white mb-6">Discussion ({{ $post->comments->count() }})</h3>
           @auth
@@ -111,7 +128,7 @@
           <div class="space-y-5">
             @foreach ($post->comments as $comment)
             <div class="flex items-start space-x-4 text-sm">
-              <img class="h-9 w-9 rounded-full object-cover flex-shrink-0" src="{{ asset('storage/' . $comment->user->avatar) }}" alt="{{ $comment->user->name }}">
+              <img class="h-9 w-9 rounded-full object-cover flex-shrink-0" src="{{ asset('storage/' . $comment->user->profile->avatar) }}" alt="{{ $comment->user->name }}">
               <div class="flex-grow bg-white border border-slate-200 dark:bg-slate-900/40 dark:border-slate-800 rounded-2xl p-4 transition-colors">
                 <div class="flex items-center justify-between mb-1">
                   <span class="font-bold text-slate-900 dark:text-slate-200">{{ $comment->user->name }}</span>
@@ -133,14 +150,14 @@
         <div class="rounded-2xl bg-white border border-slate-200 dark:bg-slate-800/40 dark:border-slate-800 p-5 transition-colors">
           <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-3">Written By</h3>
           <div class="flex items-center space-x-3 mb-3">
-            <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $post->user->avatar) }}" alt="">
+            <img class="h-10 w-10 rounded-full object-cover" src="{{ asset('storage/' . $post->user->profile->avatar) }}" alt="">
             <div>
-              <p class="text-sm font-bold text-slate-900 dark:text-slate-200">{{ $post->user->name }}</p>
-              <p class="text-2xs text-slate-400 dark:text-slate-500">{{ $post->user->job }}</p>
+              <p class="text-sm font-bold text-slate-900 dark:text-slate-200">{{ $post->user->username }}</p>
+              <p class="text-2xs text-slate-400 dark:text-slate-500">{{ $post->user->profile->job }}</p>
             </div>
           </div>
           <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-            {{ $post->user->bio }}
+            {{ $post->user->profile->bio }}
           </p>
           <a href="{{ route('preview', $post->user) }}" class="inline-block mt-3 text-xs font-bold text-indigo-600 dark:text-emerald-400 hover:underline">View Profile &rarr;</a>
         </div>

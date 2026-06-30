@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Donation;
 
 class DonateController extends Controller
@@ -17,6 +18,7 @@ class DonateController extends Controller
 
         return view('donate.donors', compact('donations'));
     }
+
     public function index()
     {
         return view("donate.donate");
@@ -24,43 +26,69 @@ class DonateController extends Controller
 
     public function pay(Request $request)
     {
-        $amount = $request->amount;
+        $user = Auth::user();
 
-        if (!$amount) {
-            return redirect()->back()->with('error', 'Invalid amount.');
-        }
+        abort_unless($user, 403);
+
+        $request->validate([
+            'amount' => ['required', 'integer', 'min:1000'], // حداقل مبلغ
+        ]);
+
+        $amount = (int) $request->amount;
 
         $donation = Donation::create([
-            'user_id' => auth()->id(),
-            'amount' => $amount,
-            'status' => 'pending',
+            'user_id' => $user->id,
+            'amount'  => $amount,
+            'status'  => 'pending',
         ]);
 
-        $response = Http::post("https://sandbox.zarinpal.com/pg/v4/payment/request.json", [
-            'merchant_id'  => '4d02b86b-1449-4b6a-a9b2-2edf4dcdde3c',
-            'amount'       => $amount,
-            'callback_url' => url('/donate/callback'),
-            'description'  => 'Blog Donation',
-        ]);
+        try {
+            $response = Http::timeout(10)->post(
+                "https://sandbox.zarinpal.com/pg/v4/payment/request.json",
+                [
+                    'merchant_id'  => '4d02b86b-1449-4b6a-a9b2-2edf4dcdde3c',
+                    'amount'       => $amount,
+                    'callback_url' => url('/donate/callback'),
+                    'description'   => 'Blog Donation',
+                ]
+            );
 
-        $data = $response->json();
+            if (!$response->successful()) {
+                throw new \Exception('Zarinpal request failed');
+            }
 
-        if (isset($data['data']['authority'])) {
+            $data = $response->json();
+
+            $authority = $data['data']['authority'] ?? null;
+
+            if (!$authority) {
+                throw new \Exception('Authority not received');
+            }
 
             $donation->update([
-                'authority' => $data['data']['authority'],
+                'authority' => $authority,
             ]);
 
-            return redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $data['data']['authority']);
-        }
+            return redirect('https://sandbox.zarinpal.com/pg/StartPay/' . $authority);
 
-        return redirect('/donate/failed');
+        } catch (\Exception $e) {
+
+            $donation->update([
+                'status' => 'failed',
+            ]);
+
+            return redirect('/donate/failed');
+        }
     }
 
     public function callback(Request $request)
     {
-        $status = $request->Status;
-        $authority = $request->Authority;
+        $status = $request->query('Status');
+        $authority = $request->query('Authority');
+
+        if (!$authority) {
+            return redirect('/donate/failed');
+        }
 
         $donation = Donation::where('authority', $authority)->first();
 
@@ -72,17 +100,28 @@ class DonateController extends Controller
             return redirect('/donate/success');
         }
 
-        if ($status === 'OK') {
+        if ($status !== 'OK') {
+            $donation->update(['status' => 'failed']);
+            return redirect('/donate/failed');
+        }
 
-            $response = Http::post("https://sandbox.zarinpal.com/pg/v4/payment/verify.json", [
-                'merchant_id' => '4d02b86b-1449-4b6a-a9b2-2edf4dcdde3c',
-                'amount'      => $donation->amount,
-                'authority'   => $authority,
-            ]);
+        try {
+            $response = Http::timeout(10)->post(
+                "https://sandbox.zarinpal.com/pg/v4/payment/verify.json",
+                [
+                    'merchant_id' => '4d02b86b-1449-4b6a-a9b2-2edf4dcdde3c',
+                    'amount'      => $donation->amount,
+                    'authority'   => $authority,
+                ]
+            );
+
+            if (!$response->successful()) {
+                throw new \Exception('Verify request failed');
+            }
 
             $data = $response->json();
 
-            if (isset($data['data']['code']) && $data['data']['code'] == 100) {
+            if (($data['data']['code'] ?? null) == 100) {
 
                 $donation->update([
                     'status' => 'paid',
@@ -91,6 +130,12 @@ class DonateController extends Controller
 
                 return redirect('/donate/success');
             }
+
+            $donation->update([
+                'status' => 'failed',
+            ]);
+
+        } catch (\Exception $e) {
 
             $donation->update([
                 'status' => 'failed',

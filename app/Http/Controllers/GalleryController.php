@@ -7,41 +7,44 @@ use App\Models\Gallery;
 use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Auth;
 
 class GalleryController extends Controller
 {
     public function create()
     {
         $categories = Category::all();
-        $is_public = Gallery::where('id', 1)->value('is_public');
 
-        return view("gallery.create", compact("categories", "is_public"));
+        return view("gallery.create", compact("categories"));
     }
+
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+        abort_unless($user, 403);
+
         $request->validate([
             "title" => ["required", "max:255"],
-            "image" => ["required", "image", "max:2028"],
+            "image" => ["required", "image"],
             "description" => ["nullable", "string"],
             "category_id" => ["nullable", "exists:categories,id"],
             'is_public' => ['required', 'boolean'],
         ]);
 
-
         $path = $request->file("image")->store("gallery", 'public');
 
+        // slug unique
         $slug = Str::slug($request->title);
         $original = $slug;
         $i = 1;
 
         while (Gallery::where('slug', $slug)->exists()) {
-            $slug = $original . '-' . $i;
-            $i++;
+            $slug = $original . '-' . $i++;
         }
 
         Gallery::create([
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
             'title' => $request->title,
             'image' => $path,
             'description' => $request->description,
@@ -50,20 +53,22 @@ class GalleryController extends Controller
             'slug' => $slug,
         ]);
 
-
         return redirect()->route('dashboard');
     }
+
     public function index()
     {
-        $galleries = Gallery::all();
-
-
-
+        $galleries = Gallery::where('is_public', true)
+            ->latest()
+            ->get();
 
         return view("gallery", compact("galleries"));
     }
+
     public function edit(Gallery $gallery)
     {
+        $this->authorizeOwner($gallery);
+
         $categories = Category::all();
 
         return view("gallery.edit", compact("categories", "gallery"));
@@ -71,12 +76,14 @@ class GalleryController extends Controller
 
     public function update(Request $request, Gallery $gallery)
     {
+        $this->authorizeOwner($gallery);
+
         $request->validate([
             'title' => ['required', 'max:255'],
             'description' => ['nullable', 'string'],
             'category_id' => ['nullable', 'exists:categories,id'],
             'is_public' => ['required', 'boolean'],
-            'image' => ['nullable', 'image', 'max:2028'],
+            'image' => ['nullable', 'image'],
         ]);
 
         $data = [
@@ -87,7 +94,6 @@ class GalleryController extends Controller
         ];
 
         if ($request->hasFile('image')) {
-
             if ($gallery->image) {
                 Storage::disk('public')->delete($gallery->image);
             }
@@ -103,14 +109,26 @@ class GalleryController extends Controller
 
     public function destroy(Gallery $gallery)
     {
+        $user = auth()->user();
+
+        if ($gallery->user_id !== $user->id && ! $user->hasRole('admin')) {
+            abort(403);
+        }
+
         if ($gallery->image) {
             Storage::disk('public')->delete($gallery->image);
         }
 
         $gallery->delete();
 
-        
         return redirect()->route('dashboard')
             ->with('success', 'Gallery deleted successfully');
+    }
+
+    private function authorizeOwner(Gallery $gallery)
+    {
+        $user = Auth::user();
+
+        abort_unless($user && $gallery->user_id === $user->id, 403);
     }
 }

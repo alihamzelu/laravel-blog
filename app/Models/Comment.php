@@ -1,10 +1,9 @@
 <?php
 
 namespace App\Models;
-use App\Models\Post;
-use App\Models\User;
+
 use Illuminate\Database\Eloquent\Model;
- 
+
 class Comment extends Model
 {
     protected $fillable = [
@@ -13,12 +12,20 @@ class Comment extends Model
         'user_id',
     ];
 
+    // Relationships
     public function post()
     {
         return $this->belongsTo(Post::class);
     }
+
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // Helpers (اختیاری ولی کاربردی)
+    public function isOwnedBy($user): bool
+    {
+        return $this->user_id === $user->id;
     }
 }

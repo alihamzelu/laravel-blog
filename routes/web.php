@@ -10,8 +10,10 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\GalleryController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\RoleRequestController;
 use App\Http\Controllers\DonateController;
+use App\Http\Controllers\NotificationController;
+
 
 Route::get('/', [PostController::class, 'home'])->name('home');
 
@@ -33,6 +35,15 @@ Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.e
 Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
 
 
+
+
+
+Route::get('/send-notification', [NotificationController::class, 'send']);
+
+
+
+Route::delete('/bookmarks/{bookmark}', [BookmarkController::class, 'destroy'])
+    ->name('bookmarks.destroy');
 
 
 
@@ -63,15 +74,17 @@ Route::put('/gallery/{gallery}', [GalleryController::class, 'update'])
 Route::delete('/gallery/{gallery}', [GalleryController::class, 'destroy'])
     ->name('gallery.destroy');
 
-
+    
+Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAllAsRead'])->name('notifications.markAll');
+Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markSingle');
 
 
 Route::middleware('auth')->group(function () {
 
-    Route::get('/role-request', [ContactController::class, 'index'])
+    Route::get('/role-request', [RoleRequestController::class, 'index'])
         ->name('role-request.index');
 
-    Route::post('/role-request', [ContactController::class, 'store'])
+    Route::post('/role-request', [RoleRequestController::class, 'store'])
         ->name('role-request.store');
 });
 

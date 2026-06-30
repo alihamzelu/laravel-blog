@@ -2,33 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use Spatie\Permission\Models\Role;
-
-use App\Models\RoleRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use App\Models\RoleRequest;
 
-class ContactController extends Controller
+class RoleRequestController extends Controller
 {
-
-
-
     public function index()
     {
-        $roles = Role::where('name', 'author')->get();
+        $roles = Role::whereIn('name', ['author', 'editor'])->get();
 
         return view('role-request', compact('roles'));
     }
 
-
-
     public function store(Request $request)
     {
+        $user = Auth::user();
+
+        abort_unless($user, 403);
+
         $request->validate([
             'requested_role' => 'required|in:author,editor',
             'message' => 'required|string|max:500',
         ]);
 
-        $exists = RoleRequest::where('user_id', auth()->id())
+        $exists = RoleRequest::where('user_id', $user->id)
             ->where('status', 'pending')
             ->exists();
 
@@ -37,7 +36,7 @@ class ContactController extends Controller
         }
 
         RoleRequest::create([
-            'user_id' => auth()->id(),
+            'user_id' => $user->id,
             'requested_role' => $request->requested_role,
             'message' => $request->message,
             'status' => 'pending',

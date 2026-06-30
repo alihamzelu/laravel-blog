@@ -89,10 +89,13 @@
               </div>
 
               <div class="p-5">
-                <span class="inline-block rounded-full px-2.5 py-0.5 text-2xs font-bold uppercase tracking-wider mb-3 bg-indigo-50 text-indigo-700 dark:bg-emerald-500/10 dark:text-emerald-400">
-                  {{ $post->category->name }}
-                </span>
+                <a href="{{ route('articles.index', ['category' => $post->category->slug]) }}">
 
+                  <span class="inline-block rounded-full px-2.5 py-0.5 text-2xs font-bold uppercase tracking-wider mb-3 bg-indigo-50 text-indigo-700 dark:bg-emerald-500/10 dark:text-emerald-400">
+                    {{ $post->category->name }}
+                  </span>
+
+                </a>
                 <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 dark:text-white dark:group-hover:text-emerald-400 transition-colors line-clamp-2 leading-snug">
                   <a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
                 </h3>
